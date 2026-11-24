@@ -153,7 +153,7 @@ return miss.length?"Falta: "+miss.join(", "):""}
 /* PDF */
 function buildPDF(o,st,final){
 const {jsPDF}=window.jspdf;const d=new jsPDF({unit:"mm",format:"letter"});const W=216,M=15;let y=0;
-const head=()=>{d.setFillColor(30,58,107);d.rect(M,10,W-2*M,16,"F");d.setTextColor(255);d.setFont("helvetica","bold");d.setFontSize(11);d.text("ACTA DE ENTREGA DE HERRAMIENTAS DE TRABAJO",M+4,20);d.setFontSize(7);d.text("OT-PO-002 · Versión 003 · 02/09/2025",W-M-3,17,{align:"right"});d.text(final?"FINAL":"PRELIMINAR",W-M-3,22,{align:"right"});d.setFillColor(76,175,80);d.rect(M,26,W-2*M,.8,"F");d.setTextColor(30);y=34};
+const head=()=>{d.setFillColor(30,58,107);d.rect(M,10,W-2*M,16,"F");d.setTextColor(255);d.setFont("helvetica","bold");d.setFontSize(11);d.text("ACTA DE ENTREGA DE HERRAMIENTAS DE TRABAJO",M+4,20);if(!final){d.setFontSize(8);d.text("PRELIMINAR",M+4,24)}d.setFillColor(76,175,80);d.rect(M,26,W-2*M,.8,"F");d.setTextColor(30);y=34};
 const need=h=>{if(y+h>262){d.addPage();head()}};
 const bar=t=>{need(10);d.setFillColor(30,58,107);d.rect(M,y,W-2*M,6.5,"F");d.setTextColor(255);d.setFont("helvetica","bold");d.setFontSize(9);d.text(t,M+3,y+4.5);d.setTextColor(30);y+=10};
 const para=(t,sz)=>{d.setFont("helvetica","normal");d.setFontSize(sz||8.5);const ls=d.splitTextToSize(t,W-2*M);ls.forEach(l=>{need(4.5);d.text(l,M,y);y+=4});y+=2};
@@ -177,11 +177,17 @@ d.text("CONINSA S.A.S.",W/2+42,y,{align:"center"});y+=8;
 if(final&&st.when){d.setFontSize(7);d.setTextColor(90);d.text("Firmado digitalmente por el trabajador: "+st.when,M,y);y+=5}
 d.setTextColor(30);d.setFontSize(7.5);d.setFont("helvetica","italic");
 para("NOTA: La firma de esta acta no sustituye el Paz y Salvo tecnológico. Este documento se rige por la Política de Entrega y Devolución de Equipos Internos (OPT PO 003). El acta debe cargarse en el ticket ITSM correspondiente y almacenarse en el Drive del proceso ABM.",7.5);
-const n=d.getNumberOfPages();for(let i=1;i<=n;i++){d.setPage(i);d.setFontSize(7);d.setTextColor(120);d.text("OT-PO-002 · Dirección de Tecnología, Procesos e Innovación · Confidencial · Uso interno",M,272);d.text("Pág. "+i+" de "+n,W-M,272,{align:"right"})}
+const n=d.getNumberOfPages();const FT=["OT-PO-002","Dirección de Tecnología, Procesos e Innovación","Confidencial","Uso interno","Coordinación de Operaciones Tecnológicas"];
+for(let i=1;i<=n;i++){d.setPage(i);
+d.setFont("helvetica","bold");d.setFontSize(6.5);d.setTextColor(255);
+["OT-PO-002","Versión 003","02/09/2025","Pág. "+i+" de "+n].forEach((t,k)=>d.text(t,W-M-3,13+k*3.4,{align:"right"}));
+d.setFont("helvetica","normal");d.setFontSize(7);d.setTextColor(120);
+const ws=FT.map(t=>d.getTextWidth(t)),gap=((W-2*M)-ws.reduce((a,b)=>a+b,0))/(FT.length-1);let x=M;
+FT.forEach((t,k)=>{d.text(t,x,272);x+=ws[k]+gap})}
 return d.output("blob")}
 
 /* ===== CONEXIÓN CON GOOGLE DRIVE (Apps Script) ===== */
-const API="https://script.google.com/macros/s/AKfycbyfQrjr46k1uczanPlW4PE1w3zTAvVq0-0cUjhTHce5mwdsanXVQ4EMj6tPczXYeCo/exec";
+const API="https://script.google.com/macros/s/AKfycbyOUKX3uqZCknRCbcMQh7MF6EtH2mHds7ERpxH07384oiuziWrw88CB9SIx6mtwllYZfA/exec";
 const b64=b=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result.split(",")[1]);f.readAsDataURL(b)});
 async function api(body){
 if(API.startsWith("PEGAR"))throw new Error("Falta configurar la URL de Apps Script en el HTML (constante API).");
