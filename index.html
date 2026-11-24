@@ -181,7 +181,7 @@ const n=d.getNumberOfPages();for(let i=1;i<=n;i++){d.setPage(i);d.setFontSize(7)
 return d.output("blob")}
 
 /* ===== CONEXIÓN CON GOOGLE DRIVE (Apps Script) ===== */
-const API="https://script.google.com/macros/s/AKfycbyOUKX3uqZCknRCbcMQh7MF6EtH2mHds7ERpxH07384oiuziWrw88CB9SIx6mtwllYZfA/exec";
+const API="https://script.google.com/macros/s/AKfycbyfQrjr46k1uczanPlW4PE1w3zTAvVq0-0cUjhTHce5mwdsanXVQ4EMj6tPczXYeCo/exec";
 const b64=b=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result.split(",")[1]);f.readAsDataURL(b)});
 async function api(body){
 if(API.startsWith("PEGAR"))throw new Error("Falta configurar la URL de Apps Script en el HTML (constante API).");
