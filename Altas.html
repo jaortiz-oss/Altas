@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Acta de entrega de herramientas · OT-PO-002</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f3f5f9;--card:#fff;--tx:#1a2233;--mut:#5b6578;--navy:#1e3a6b;--grn:#4caf50;--bd:#d5dbe6;--inp:#fff;--warn:#fff8e1}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#10141c;--card:#1a2030;--tx:#e8ecf4;--mut:#9aa6bd;--navy:#3d5fa3;--bd:#2f3a52;--inp:#121826;--warn:#2b2614}}
+:root[data-theme="dark"]{--bg:#10141c;--card:#1a2030;--tx:#e8ecf4;--mut:#9aa6bd;--navy:#3d5fa3;--bd:#2f3a52;--inp:#121826;--warn:#2b2614}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:16px}
+header{background:var(--navy);color:#fff;border-bottom:4px solid var(--grn);border-radius:8px 8px 0 0;padding:14px 18px;display:flex;justify-content:space-between;gap:12px;align-items:center}
+header h1{font-size:17px;margin:0}header small{opacity:.85;text-align:right;font-size:12px;line-height:1.3}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:8px;padding:16px;margin:14px 0}
+h2{font-size:14px;letter-spacing:.04em;text-transform:uppercase;color:#fff;background:var(--navy);margin:-16px -16px 14px;padding:8px 16px;border-radius:8px 8px 0 0}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:640px){.grid{grid-template-columns:1fr}}
+label{display:block;font-size:12px;font-weight:600;color:var(--mut);margin-bottom:3px}
+input,select{width:100%;padding:9px 10px;border:1px solid var(--bd);border-radius:6px;background:var(--inp);color:var(--tx);font:inherit}
+input:disabled,select:disabled{opacity:.75}
+.eq{display:grid;grid-template-columns:1.2fr 1.2fr 1fr 1fr auto;gap:8px;margin-bottom:8px;align-items:end}
+@media(max-width:640px){.eq{grid-template-columns:1fr 1fr;border-bottom:1px dashed var(--bd);padding-bottom:10px}}
+button{font:inherit;border:0;border-radius:6px;padding:9px 14px;cursor:pointer;background:var(--navy);color:#fff;font-weight:600}
+button.sec{background:transparent;color:var(--navy);border:1px solid var(--navy)}
+button.ok{background:#2e7d32}button:disabled{opacity:.5;cursor:not-allowed}
+.sig{border:1px dashed var(--bd);border-radius:8px;padding:10px}
+.sig canvas{width:100%;height:150px;background:#fff;border-radius:6px;touch-action:none;border:1px solid var(--bd);display:block}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.legal{font-size:13px;color:var(--mut)}.legal p{margin:0 0 8px;text-align:justify}
+.note{background:var(--warn);border-left:4px solid var(--grn);padding:10px 12px;border-radius:4px;font-size:13px;margin-top:10px}
+.msg{margin-top:10px;font-size:14px}.err{color:#c62828}.good{color:#2e7d32}
+.link{display:flex;gap:8px;margin-top:8px}.link input{font-family:monospace;font-size:13px}
+details summary{cursor:pointer;font-weight:600;color:var(--navy)}
+ul.sw{columns:2;font-size:13px;color:var(--mut);padding-left:18px}
+.badge{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;font-weight:700;background:#fff;color:var(--navy)}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><div><h1>ACTA DE ENTREGA DE HERRAMIENTAS DE TRABAJO</h1><span class="badge" id="stage">Paso 1 · Técnico</span></div>
+<small>OT-PO-002<br>Versión 003 · 02/09/2025</small></header>
+
+<div class="card" id="openBox" style="display:none">
+<label>¿Ya tienes un código de acta? Ábrela para firmar</label>
+<div class="link"><input id="codeIn" placeholder="Código (ej. k3j9x2ab)"><button class="sec" id="openBtn">Abrir</button></div>
+</div>
+
+<div class="card"><h2>Datos generales</h2>
+<div class="grid">
+<div><label>Nombre del colaborador</label><input id="nombre" autocomplete="off"></div>
+<div><label>Cédula N°</label><input id="cedula" inputmode="numeric"></div>
+<div><label>Ciudad</label><select id="ciudad"><option value="">Seleccione…</option><option value="BOG">Bogotá</option><option value="BAQ">Barranquilla</option><option value="MED">Medellín</option></select></div>
+<div><label>Fecha</label><input id="fecha" type="date"></div>
+<div><label>Cargo / Área</label><input id="cargo"></div>
+<div><label>Ticket ITSM N°</label><input id="ticket" placeholder="CASO-2026-00000"></div>
+<div><label>Técnico que entrega</label><input id="tecnico"></div>
+<div><label>Proceso ABM</label><select id="abm"><option>Alta</option><option>Baja</option><option>Modificación</option></select></div>
+</div></div>
+
+<div class="card"><h2>Elementos recibidos</h2>
+<div id="eqs"></div>
+<button class="sec" id="addEq" type="button">+ Agregar elemento</button></div>
+
+<div class="card"><h2>Declaración y condiciones</h2>
+<div class="legal" id="legal"></div>
+<div class="grid" style="margin-top:8px">
+<div><label>Valor a deducir (en letras) — opcional</label><input id="dedL"></div>
+<div><label>Valor a deducir ($) — opcional</label><input id="dedN" inputmode="numeric"></div>
+</div>
+<details style="margin-top:12px"><summary>Software autorizado</summary><ul class="sw" id="sw"></ul></details>
+</div>
+
+<div class="card"><h2>Firmas</h2>
+<div class="grid">
+<div class="sig" id="sigT"><label>Quien entrega · Agente Mesa de Servicios</label></div>
+<div class="sig" id="sigW"><label>Quien recibe · El Trabajador</label>
+<div style="margin-top:6px"><label>C.C. del trabajador (firma)</label><input id="ccFirma" inputmode="numeric"></div></div>
+</div></div>
+
+<div class="card">
+<div class="row" id="actions"></div>
+<div id="shareBox" style="display:none">
+<label style="margin-top:12px">Enlace para que el trabajador firme</label>
+<div class="link"><input id="shareLink" readonly><button class="sec" id="copyBtn">Copiar</button></div>
+<div class="msg" style="color:var(--mut)">Código del acta: <b id="codeShow"></b></div></div>
+<div class="msg" id="msg"></div>
+<div class="note">Al firmar, el acta se guarda de forma segura en el archivo del proceso ABM. No se descarga ningún archivo.</div>
+</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+const LEGAL=[
+"Yo, {nombre}, identificado(a) con cédula de ciudadanía No. {cedula}, en mi calidad de colaborador de CONINSA S.A.S., declaro por medio de la presente acta que, en la ciudad de {ciudadN} a los ({dia}) días del mes de {mes} de {anio}, he recibido los elementos de trabajo detallados. Estos elementos me han sido suministrados por CONINSA S.A.S como herramientas esenciales para el desempeño de mis funciones y reconozco que son propiedad exclusiva de la empresa.",
+"Así mismo, declaro que la(s) herramienta(s) señalada(s) se encuentran en perfecto estado y están bajo mi responsabilidad directa y personal, por lo tanto, en caso de daño, extravío o pérdida total o parcial, deterioro (que exceda el desgaste natural) o no devolución por causa imputable a mi responsabilidad, descuido, uso indebido y/o malos tratamientos, pagaré a nombre de CONINSA S.A.S. el valor correspondiente, de acuerdo con la Política de Entrega y devolución de equipos (OPT PO 003). Por lo tanto, autorizo a CONINSA S.A.S. a deducir el valor de {dedL} ({dedN}) de mi salario, vacaciones, prima, cesantías, intereses de cesantías, y en caso de retirarme de CONINSA S.A.S., por cualquier causa, este valor se convierte en exigible inmediatamente y en tal evento, expresamente autorizo a CONINSA S.A.S. para deducir o retener la suma de mi liquidación de acreencias laborales, indemnizaciones y prestaciones sociales.",
+"De la misma forma, en caso de daño imputable a mi responsabilidad por descuido, uso indebido o malos tratamientos, según lo definido en el ACTA DE ENTREGA Y DEVOLUCIÓN DE HERRAMIENTAS que se anexa a este documento, me comprometo a asumir el costo de la reparación de los mismos en su totalidad autorizando a ITS CONINSA S.A.S. a elegir el proveedor que técnicamente presente la reparación respectiva a su mayor conveniencia y garantía, el cual será informado previamente.",
+"Así mismo, entiendo y acepto que los equipos determinados anteriormente (con sus correspondientes accesorios) sean revisados y/o auditados en cualquier momento por CONINSA S.A.S sin que sea necesario que la empresa me notifique previamente. De esta forma declaro mi aceptación y entendimiento de que las revisiones periódicas de los equipos entregados por la empresa se requieren para la verificación del cumplimiento de mis obligaciones laborales, evaluar cualquier falta en que incurra en el desempeño de mis labores, y de los procesos de seguridad de la empresa, sin que esto constituya una violación a la intimidad o libre desarrollo de la personalidad, entre otros.",
+"Las herramientas entregadas pertenecen a CONINSA S.A.S., por lo cual, en caso de terminación del contrato de trabajo vigente entre las partes, por cualquier razón, me comprometo como trabajador a hacer la devolución de estos a mi empleador, dentro del primer (1) día siguiente a la terminación del vínculo laboral.",
+"PROHIBICIÓN DE SOFTWARE NO AUTORIZADO. Me abstendré de instalar, descargar o utilizar cualquier tipo de software, juegos, aplicaciones, videos, imágenes, audios o cualquier otro tipo de archivo que no hayan sido previamente autorizados por el área de Tecnología de Coninsa S.A.S. El uso indebido de la red de internet para fines no laborales también constituye una falta (RIT, Art. 69, Faltas 86, 87, 97 y 98). El único software certificado y permitido es el listado a continuación. Para software adicional debes solicitar autorización e instalación a la Dirección de Tecnología, Procesos e Innovación; está absolutamente prohibida cualquier modificación, desinstalación o instalación sin su consentimiento."];
+const SW=["7-Zip 18.01 (x64)","Adobe Acrobat Reader","FortiClient VPN","Google Chrome","Google Drive","Microsoft Windows 11 Pro","Microsoft 365 (corporativa 20024)","SentinelOne Agent","TeamViewer"];
+const CIUD={BOG:"Bogotá",BAQ:"Barranquilla",MED:"Medellín"};
+const MESES=["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+const F=["nombre","cedula","ciudad","fecha","cargo","ticket","tecnico","abm","dedL","dedN"];
+let docId=null,docRef=null,stage="tech",db=null,tecSig=null,wrkSig=null;
+
+$("sw").innerHTML=SW.map(s=>"<li>"+s+"</li>").join("");
+$("legal").innerHTML=LEGAL.map(p=>"<p>"+p.replace(/\{[a-zA-Z]+\}/g,"…")+"</p>").join("");
+$("fecha").value=new Date().toISOString().slice(0,10);
+
+/* equipos */
+function addEq(v){v=v||{};const d=document.createElement("div");d.className="eq";
+d.innerHTML='<div><label>Herramienta</label><input data-k="h"></div><div><label>Marca / Modelo</label><input data-k="m"></div><div><label>Serial</label><input data-k="s"></div><div><label>Cód. Activo</label><input data-k="c"></div><button type="button" class="sec">✕</button>';
+d.querySelectorAll("input").forEach(i=>i.value=v[i.dataset.k]||"");
+d.querySelector("button").onclick=()=>d.remove();$("eqs").appendChild(d)}
+const getEqs=()=>[...document.querySelectorAll(".eq")].map(r=>{const o={};r.querySelectorAll("input").forEach(i=>o[i.dataset.k]=i.value.trim());return o}).filter(o=>o.h||o.m||o.s||o.c);
+$("addEq").onclick=()=>addEq();
+addEq({h:"PORTATIL"});addEq({h:"CARGADOR"});
+
+/* firmas */
+function pad(root){const c=document.createElement("canvas");c.width=600;c.height=200;root.appendChild(c);
+const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,600,200);x.lineWidth=3;x.lineCap="round";x.strokeStyle="#111";
+let dn=false,has=false,img=null;
+const pt=e=>{const r=c.getBoundingClientRect();return[(e.clientX-r.left)*600/r.width,(e.clientY-r.top)*200/r.height]};
+c.onpointerdown=e=>{if(c.dataset.lock)return;dn=true;has=true;img=null;c.setPointerCapture(e.pointerId);const[a,b]=pt(e);x.beginPath();x.moveTo(a,b);x.lineTo(a+.1,b+.1);x.stroke()};
+c.onpointermove=e=>{if(!dn)return;const[a,b]=pt(e);x.lineTo(a,b);x.stroke()};
+c.onpointerup=()=>dn=false;
+const bar=document.createElement("div");bar.className="row";
+const clr=document.createElement("button");clr.type="button";clr.className="sec";clr.textContent="Borrar";
+const up=document.createElement("button");up.type="button";up.className="sec";up.textContent="Subir imagen";
+const fi=document.createElement("input");fi.type="file";fi.accept="image/*";fi.style.display="none";
+clr.onclick=()=>{x.fillStyle="#fff";x.fillRect(0,0,600,200);has=false;img=null};
+up.onclick=()=>fi.click();
+fi.onchange=()=>{const f=fi.files[0];if(!f)return;const im=new Image();im.onload=()=>{x.fillStyle="#fff";x.fillRect(0,0,600,200);const k=Math.min(600/im.width,200/im.height);const w=im.width*k,h=im.height*k;x.drawImage(im,(600-w)/2,(200-h)/2,w,h);has=true};im.src=URL.createObjectURL(f);fi.value=""};
+bar.append(clr,up,fi);root.appendChild(bar);
+return{get:()=>img||(has?c.toDataURL("image/jpeg",.8):null),set:d=>{img=d;const im=new Image();im.onload=()=>{x.fillStyle="#fff";x.fillRect(0,0,600,200);x.drawImage(im,0,0,600,200)};im.src=d},lock:()=>{c.dataset.lock=1;bar.style.display="none"},unlock:()=>{delete c.dataset.lock;bar.style.display=""},clear:clr.onclick}}
+const pT=pad($("sigT")),pW=pad($("sigW"));
+
+/* datos */
+const val=()=>{const o={};F.forEach(k=>o[k]=$(k).value.trim());o.eqs=getEqs();return o};
+const fill=o=>{F.forEach(k=>$(k).value=o[k]||"");$("eqs").innerHTML="";(o.eqs||[]).forEach(addEq)};
+function fechaTxt(f){const[a,m,d]=f.split("-");return{dia:String(+d),mes:MESES[+m-1],anio:a}}
+const fname=(o,pre)=>{const n=(o.ciudad||"XXX")+" - "+o.nombre.replace(/[\\\/:*?"<>|]/g,"").replace(/\s+/g," ");return(pre||"")+n+".pdf"};
+const setMsg=(t,c)=>{$("msg").className="msg "+(c||"");$("msg").textContent=t};
+function check(o,needT,needW){const miss=[];["nombre","cedula","ciudad","fecha","cargo","ticket","tecnico"].forEach(k=>{if(!o[k])miss.push(k)});
+if(!o.eqs.length)miss.push("elementos");if(needT&&!pT.get())miss.push("firma del técnico");if(needW&&!pW.get())miss.push("firma del trabajador");
+return miss.length?"Falta: "+miss.join(", "):""}
+
+/* PDF */
+function buildPDF(o,st,final){
+const {jsPDF}=window.jspdf;const d=new jsPDF({unit:"mm",format:"letter"});const W=216,M=15;let y=0;
+const head=()=>{d.setFillColor(30,58,107);d.rect(M,10,W-2*M,16,"F");d.setTextColor(255);d.setFont("helvetica","bold");d.setFontSize(11);d.text("ACTA DE ENTREGA DE HERRAMIENTAS DE TRABAJO",M+4,20);d.setFontSize(7);d.text("OT-PO-002 · Versión 003 · 02/09/2025",W-M-3,17,{align:"right"});d.text(final?"FINAL":"PRELIMINAR",W-M-3,22,{align:"right"});d.setFillColor(76,175,80);d.rect(M,26,W-2*M,.8,"F");d.setTextColor(30);y=34};
+const need=h=>{if(y+h>262){d.addPage();head()}};
+const bar=t=>{need(10);d.setFillColor(30,58,107);d.rect(M,y,W-2*M,6.5,"F");d.setTextColor(255);d.setFont("helvetica","bold");d.setFontSize(9);d.text(t,M+3,y+4.5);d.setTextColor(30);y+=10};
+const para=(t,sz)=>{d.setFont("helvetica","normal");d.setFontSize(sz||8.5);const ls=d.splitTextToSize(t,W-2*M);ls.forEach(l=>{need(4.5);d.text(l,M,y);y+=4});y+=2};
+head();bar("DATOS GENERALES");
+const f=fechaTxt(o.fecha),cn=CIUD[o.ciudad]||o.ciudad,fd=o.fecha.split("-").reverse().join("/");
+const rows=[["Nombre del colaborador",o.nombre,"Cédula N°",o.cedula],["Ciudad",cn,"Fecha",fd],["Cargo / Área",o.cargo,"Ticket ITSM N°",o.ticket],["Técnico que entrega",o.tecnico,"Proceso ABM",o.abm]];
+d.setFontSize(8.5);rows.forEach(r=>{need(6);d.setFont("helvetica","bold");d.text(r[0]+":",M,y);d.text(r[2]+":",W/2+2,y);d.setFont("helvetica","normal");d.text(String(r[1]).slice(0,38),M+38,y);d.text(String(r[3]).slice(0,30),W/2+30,y);y+=5.5});y+=3;
+bar("ELEMENTOS RECIBIDOS");d.setFont("helvetica","bold");d.setFontSize(8.5);d.text("Herramienta",M,y);d.text("Marca / Modelo",M+50,y);d.text("Serial",M+100,y);d.text("Cód. Activo",M+138,y);y+=5;d.setFont("helvetica","normal");
+o.eqs.forEach(e=>{need(6);d.text(e.h.slice(0,28),M,y);d.text(e.m.slice(0,28),M+50,y);d.text(e.s.slice(0,22),M+100,y);d.text(e.c.slice(0,20),M+138,y);y+=5.5});y+=3;
+bar("DECLARACIÓN Y CONDICIONES");
+const rep={nombre:o.nombre,cedula:o.cedula,ciudadN:cn,dia:f.dia,mes:f.mes,anio:f.anio,dedL:o.dedL||"__________________",dedN:o.dedN?("$"+o.dedN):"$______"};
+LEGAL.forEach(p=>para(p.replace(/\{(\w+)\}/g,(m,k)=>rep[k])));
+need(12);d.setFont("helvetica","bold");d.text("Software autorizado:",M,y);y+=4.5;para(SW.join(" · "),8);
+need(60);y+=2;para("En señal de aceptación de lo establecido en la presente acta, se firma a los "+f.dia+" días del mes de "+f.mes+" de "+f.anio+".",9);
+bar("FIRMAS");y+=1;const sy=y;
+const put=(s,x)=>{if(s)d.addImage(s,"JPEG",x,sy,60,20)};put(st.t,M+10);put(st.w,W/2+10);
+y=sy+22;d.setDrawColor(30);d.line(M+5,y,M+80,y);d.line(W/2+5,y,W-M-5,y);y+=4;d.setFont("helvetica","bold");d.setFontSize(8);
+d.text("Quien entrega · Agente Mesa de Servicios",M+42,y,{align:"center"});d.text("Quien recibe · El Trabajador",W/2+42,y,{align:"center"});y+=4;
+d.setFont("helvetica","normal");d.text(o.tecnico,M+42,y,{align:"center"});d.text("C.C. "+(st.cc||"____________"),W/2+42,y,{align:"center"});y+=4;
+d.text("CONINSA S.A.S.",W/2+42,y,{align:"center"});y+=8;
+if(final&&st.when){d.setFontSize(7);d.setTextColor(90);d.text("Firmado digitalmente por el trabajador: "+st.when,M,y);y+=5}
+d.setTextColor(30);d.setFontSize(7.5);d.setFont("helvetica","italic");
+para("NOTA: La firma de esta acta no sustituye el Paz y Salvo tecnológico. Este documento se rige por la Política de Entrega y Devolución de Equipos Internos (OPT PO 003). El acta debe cargarse en el ticket ITSM correspondiente y almacenarse en el Drive del proceso ABM.",7.5);
+const n=d.getNumberOfPages();for(let i=1;i<=n;i++){d.setPage(i);d.setFontSize(7);d.setTextColor(120);d.text("OT-PO-002 · Dirección de Tecnología, Procesos e Innovación · Confidencial · Uso interno",M,272);d.text("Pág. "+i+" de "+n,W-M,272,{align:"right"})}
+return d.output("blob")}
+
+/* ===== CONEXIÓN CON GOOGLE DRIVE (Apps Script) ===== */
+const API="https://script.google.com/macros/s/AKfycbyfQrjr46k1uczanPlW4PE1w3zTAvVq0-0cUjhTHce5mwdsanXVQ4EMj6tPczXYeCo/exec";
+const b64=b=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result.split(",")[1]);f.readAsDataURL(b)});
+async function api(body){
+if(API.startsWith("PEGAR"))throw new Error("Falta configurar la URL de Apps Script en el HTML (constante API).");
+const r=await fetch(API,{method:"POST",headers:{"Content-Type":"text/plain;charset=utf-8"},body:JSON.stringify(body)});
+const j=await r.json();if(!j.ok)throw new Error(j.error||"Error del servidor");return j}
+async function apiGet(id){
+if(API.startsWith("PEGAR"))throw new Error("Falta configurar la URL de Apps Script en el HTML (constante API).");
+const r=await fetch(API+"?action=get&id="+encodeURIComponent(id));return r.json()}
+
+/* compartir */
+const rid=()=>Math.random().toString(36).slice(2,10);
+function showShare(id){$("shareBox").style.display="";$("codeShow").textContent=id;
+$("shareLink").value=location.href.split("#")[0]+"#"+id}
+$("copyBtn").onclick=async()=>{try{await navigator.clipboard.writeText($("shareLink").value);setMsg("Enlace copiado.","good")}catch(e){$("shareLink").select();setMsg("Copia el enlace manualmente.")}};
+
+async function techSave(){
+const o=val();const e=check(o,true,false);if(e)return setMsg(e,"err");
+$("btnPre").disabled=true;setMsg("Generando PDF y subiendo a Drive…");
+try{const blob=buildPDF(o,{t:pT.get()},false);docId=docId||rid();const nm=fname(o,"PRELIMINAR - ");
+await api({action:"prelim",id:docId,o,t:pT.get(),pdfName:nm,pdf:await b64(blob)});
+showShare(docId);try{history.replaceState(null,"","#"+docId)}catch(_){}
+setMsg("Preliminar guardado. Envía el enlace al trabajador para que firme.","good")}
+catch(x){setMsg("Error: "+(x.message||x),"err")}
+$("btnPre").disabled=false}
+
+function done(t){document.querySelectorAll(".card").forEach(c=>c.style.display="none");
+const c=document.createElement("div");c.className="card";c.innerHTML='<h2>'+(t||'✔ Acta firmada y enviada')+'</h2><p>Gracias. Tu firma quedó registrada correctamente. Ya puedes cerrar esta página.</p>';
+document.querySelector(".wrap").appendChild(c);$("stage").textContent="Firmada";try{history.replaceState(null,"",location.pathname)}catch(_){}}
+
+async function workerSave(){
+const o=val();const cc=$("ccFirma").value.trim();
+if(!pW.get())return setMsg("Falta la firma del trabajador.","err");
+if(!cc)return setMsg("Falta la C.C. del trabajador.","err");
+$("btnFin").disabled=true;setMsg("Generando PDF final y guardando en Drive…");
+try{const when=new Date().toLocaleString("es-CO");const blob=buildPDF(o,{t:pT.get(),w:pW.get(),cc,when},true);const nm=fname(o,"");
+await api({action:"final",id:docId,w:pW.get(),cc,when,pdfName:nm,pdf:await b64(blob)});
+done()}
+catch(x){setMsg("Error: "+(x.message||x),"err")}
+if($("btnFin"))$("btnFin").disabled=false}
+
+/* modos */
+function lockData(){F.forEach(k=>$(k).disabled=true);document.querySelectorAll(".eq input,.eq button,#addEq").forEach(e=>e.disabled=true);pT.lock()}
+async function loadDoc(id){
+docId=id;setMsg("Cargando acta…");
+try{const j=await apiGet(id);if(!j.ok)return setMsg("No existe un acta con ese código.","err");
+const r=j.data;
+if(r.status==="firmado"){done("Esta acta ya fue firmada");return}
+fill(r.o);pT.set(r.t);lockData();
+$("stage").textContent="Paso 2 · Trabajador";$("openBox").style.display="none";
+$("actions").innerHTML='<button class="ok" id="btnFin">Firmar y guardar acta final</button>';$("btnFin").onclick=workerSave;
+$("ccFirma").value=r.o.cedula;
+setMsg("Revisa la información, firma en el recuadro de la derecha y pulsa el botón.")}
+catch(e){setMsg("No se pudo abrir el acta: "+(e.message||e),"err")}}
+
+(function init(){
+$("actions").innerHTML='<button id="btnPre">Guardar preliminar (PDF) en Drive y generar enlace</button>';$("btnPre").onclick=techSave;
+$("openBox").style.display="";
+$("openBtn").onclick=()=>{const c=$("codeIn").value.trim().replace(/^.*#/,"");if(c)loadDoc(c)};
+const h=location.hash.slice(1);if(h)loadDoc(h);
+})();
+</script>
+</body>
+</html>
