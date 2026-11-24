@@ -161,8 +161,8 @@ head();bar("DATOS GENERALES");
 const f=fechaTxt(o.fecha),cn=CIUD[o.ciudad]||o.ciudad,fd=o.fecha.split("-").reverse().join("/");
 const rows=[["Nombre del colaborador",o.nombre,"Cédula N°",o.cedula],["Ciudad",cn,"Fecha",fd],["Cargo / Área",o.cargo,"Ticket ITSM N°",o.ticket],["Técnico que entrega",o.tecnico,"Proceso ABM",o.abm]];
 d.setFontSize(8.5);rows.forEach(r=>{need(6);d.setFont("helvetica","bold");d.text(r[0]+":",M,y);d.text(r[2]+":",W/2+2,y);d.setFont("helvetica","normal");d.text(String(r[1]).slice(0,38),M+38,y);d.text(String(r[3]).slice(0,30),W/2+30,y);y+=5.5});y+=3;
-bar("ELEMENTOS RECIBIDOS");d.setFont("helvetica","bold");d.setFontSize(8.5);d.text("Herramienta",M,y);d.text("Marca / Modelo",M+50,y);d.text("Serial",M+100,y);d.text("Cód. Activo",M+138,y);y+=5;d.setFont("helvetica","normal");
-o.eqs.forEach(e=>{need(6);d.text(e.h.slice(0,28),M,y);d.text(e.m.slice(0,28),M+50,y);d.text(e.s.slice(0,22),M+100,y);d.text(e.c.slice(0,20),M+138,y);y+=5.5});y+=3;
+bar("ELEMENTOS RECIBIDOS");d.setFont("helvetica","bold");d.setFontSize(8.5);d.text("Herramienta",M,y);d.text("Marca / Modelo",M+50,y);d.text("Serial",M+100,y);d.text("Cód. Activo",M+146,y);y+=5;d.setFont("helvetica","normal");
+o.eqs.forEach(e=>{need(6);d.text(e.h.slice(0,28),M,y);d.text(e.m.slice(0,28),M+50,y);d.text(e.s.slice(0,22),M+100,y);d.text(e.c.slice(0,20),M+146,y);y+=5.5});y+=3;
 bar("DECLARACIÓN Y CONDICIONES");
 const rep={nombre:o.nombre,cedula:o.cedula,ciudadN:cn,dia:f.dia,mes:f.mes,anio:f.anio,dedL:o.dedL||"__________________",dedN:o.dedN?("$"+o.dedN):"$______"};
 LEGAL.forEach(p=>para(p.replace(/\{(\w+)\}/g,(m,k)=>rep[k])));
@@ -181,7 +181,7 @@ const n=d.getNumberOfPages();for(let i=1;i<=n;i++){d.setPage(i);d.setFontSize(7)
 return d.output("blob")}
 
 /* ===== CONEXIÓN CON GOOGLE DRIVE (Apps Script) ===== */
-const API="https://script.google.com/macros/s/AKfycbyfQrjr46k1uczanPlW4PE1w3zTAvVq0-0cUjhTHce5mwdsanXVQ4EMj6tPczXYeCo/exec";
+const API="https://script.google.com/macros/s/AKfycbyOUKX3uqZCknRCbcMQh7MF6EtH2mHds7ERpxH07384oiuziWrw88CB9SIx6mtwllYZfA/exec";
 const b64=b=>new Promise(r=>{const f=new FileReader();f.onload=()=>r(f.result.split(",")[1]);f.readAsDataURL(b)});
 async function api(body){
 if(API.startsWith("PEGAR"))throw new Error("Falta configurar la URL de Apps Script en el HTML (constante API).");
